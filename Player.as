@@ -51,6 +51,13 @@ package
 			ball.state = Ball.HOLDED;
 		}
 		
+		public function shoot_ball():void
+		{
+			ball.state = Ball.SHOOTED;
+			ball = null;
+		}
+		
+		
 		override public function update():void
 		{
 			// player controls and moving
@@ -97,14 +104,21 @@ package
 						}
 					} 
 				}
+			}
 			
+			if (ball != null) {
+				ball.do_predict = true;
+				ball.velocity_x = 30;
+				ball.velocity_y = -160;
+				if (Input.check("down")) {
+					shoot_ball();
+				}
 			}
 			
 			// update ball before player moving
 			// to get a attached effect
 			if (ball != null) {
 				// player holding the ball
-				// TODO roll the ball some how
 				ball.x = x + 3;
 				ball.y = y - 8;
 			}
@@ -114,11 +128,7 @@ package
 			y += _velo_y * FP.elapsed;
 			if (x < 0) x = 0;
 			else if (x > Com.WIDTH - width) x = Com.WIDTH - width;
-			FP.console.log(_velo_x);
 			
-			
-			
-				
 			super.update();
 		}
 	}

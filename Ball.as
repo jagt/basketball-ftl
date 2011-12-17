@@ -18,9 +18,10 @@ package
 		public var velocity_x:Number;
 		public var velocity_y:Number;
 		public var state:int;
+		public var do_predict:Boolean;
 		
 		private const ROLL_THRESH:Number = 50*50;
-		private var _gravity:Number;
+		private var _gravity:Number = 120;
 		private var _roll_counter:Number;
 		
 		public function Ball(x:Number=0, y:Number=0)
@@ -38,6 +39,13 @@ package
 			sprite.frame = (sprite.frame + 1) % 4;
 		}
 		
+		override public function render():void
+		{
+			if (do_predict)
+				predict_draw(velocity_x, velocity_y);
+			super.render();
+		}
+		
 		
 		override public function update():void
 		{
@@ -46,9 +54,38 @@ package
 				if (_roll_counter > ROLL_THRESH) {
 					roll();
 				}
+				// update with velocity only when not holded
+				velocity_y += _gravity * FP.elapsed;
+				x += velocity_x * FP.elapsed;
+				y += velocity_y * FP.elapsed;
 			}
 			
 			super.update();
+		}
+		
+		private function predict_draw(vx:Number, vy:Number):void
+		{
+			var dt:Number = FP.elapsed; // use last frame elapsed
+			var t:Number = 0;
+			var px:Number, py:Number, px2:Number, py2:Number;
+			// to predict
+			FP.buffer.lock();
+			for (var ix:int = 0; ix < 30; ++ix )
+			{
+				// TODO opt to an add fashion
+				// TODO draw line based on curve so it would looks better
+				t = ix * 4 * FP.elapsed;
+//				t = px / vx;
+				px = vx * t; 
+				py  = vy * t + 0.5 * _gravity * t * t;
+				if (py + centerY > 200 - 4 || px + centerX > 180) break;
+				FP.buffer.setPixel(px + centerX, py + centerY, Com.COLOR_3);
+//				t = (px + 1) / vx;
+//				px = vx * t; 
+//				py = vy * t + 0.5 * _gravity * t * t;
+//				FP.buffer.setPixel(px + centerX, py + centerY, Com.COLOR_3);
+			}
+			FP.buffer.unlock();
 		}
 		
 	}

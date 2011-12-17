@@ -27,6 +27,8 @@ package
 			add(testball);
 			FP.console.enable();
 			player.hold_ball(testball);
+			FP.console.log(FP.buffer.height);
+			FP.console.log(FP.buffer.width);
 		}
 	}
 }

@@ -8,7 +8,10 @@ package
 		// say a ball with 0.2m as radius, displayed as a 8x8 ball
 		public static const SCALE:Number = 20.0;
 		
-		public static const COLOR_WHITE:uint = 0xE7D79C;
+		public static const COLOR_0:uint = 0xE7D79C;
+		public static const COLOR_1:uint = 0xB5A66B;
+		public static const COLOR_2:uint = 0x7B7163;
+		public static const COLOR_3:uint = 0x393829;
 		
 	}
 	
