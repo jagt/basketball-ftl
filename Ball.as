@@ -30,8 +30,15 @@ package
 			super(x, y, sprite);
 			setHitbox(8, 8, 0, 0);
 			
+			reset();
+		}
+		
+		public function reset():void
+		{
 			sprite.frame = 0;
 			state = FREE;
+			velocity_x = 100;
+			velocity_y = -50;
 		}
 		
 		public function roll():void

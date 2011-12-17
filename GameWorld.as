@@ -2,6 +2,7 @@ package
 {
 	import net.flashpunk.*;
 	import net.flashpunk.debug.Console;
+	import net.flashpunk.utils.*;
 	
 	public class GameWorld extends World
 	{
@@ -29,6 +30,15 @@ package
 			player.hold_ball(testball);
 			FP.console.log(FP.buffer.height);
 			FP.console.log(FP.buffer.width);
+		}
+		
+		override public function update():void
+		{
+			if (Input.check(Key.R))
+			{
+				FP.world = new GameWorld();
+			}
+			super.update();
 		}
 	}
 }
