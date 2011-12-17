@@ -21,7 +21,7 @@ package
 		public var do_predict:Boolean;
 		
 		private const ROLL_THRESH:Number = 50*50;
-		private var _gravity:Number = 120;
+		private var _gravity:Number = 250;
 		private var _roll_counter:Number;
 		
 		public function Ball(x:Number=0, y:Number=0)
@@ -65,16 +65,17 @@ package
 		
 		private function predict_draw(vx:Number, vy:Number):void
 		{
-			var dt:Number = FP.elapsed; // use last frame elapsed
+			var dt:Number = 0.0333; // use last frame elapsed
 			var t:Number = 0;
 			var px:Number, py:Number, px2:Number, py2:Number;
 			// to predict
 			FP.buffer.lock();
-			for (var ix:int = 0; ix < 30; ++ix )
+			for (var ix:int = 0; ix < 40; ++ix )
 			{
 				// TODO opt to an add fashion
 				// TODO draw line based on curve so it would looks better
-				t = ix * 4 * FP.elapsed;
+				t = ix * 1.5 * dt;
+				//FP.console.log( Math.abs(t + vy / _gravity) );
 //				t = px / vx;
 				px = vx * t; 
 				py  = vy * t + 0.5 * _gravity * t * t;

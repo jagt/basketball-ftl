@@ -108,8 +108,8 @@ package
 			
 			if (ball != null) {
 				ball.do_predict = true;
-				ball.velocity_x = 30;
-				ball.velocity_y = -160;
+				ball.velocity_x = 100;
+				ball.velocity_y = -200;
 				if (Input.check("down")) {
 					shoot_ball();
 				}
