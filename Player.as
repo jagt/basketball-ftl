@@ -22,6 +22,7 @@ package
 		private var _velo_y:Number = 0;
 		private var _on_floor:Boolean = true;
 		private var _walk_counter:Number;
+		private var _hold_roll:int;
 		
 		public function Player()
 		{
@@ -41,8 +42,18 @@ package
 			sprite.frame = 0;
 		}
 		
+		public function hold_ball(free_ball:Ball):void
+		{
+			if (free_ball == null || free_ball.state != Ball.FREE) {
+				throw "get an bad ball";	
+			}
+			ball = free_ball;
+			ball.state = Ball.HOLDED;
+		}
+		
 		override public function update():void
 		{
+			// player controls and moving
 			if (y >= 200 - height)
 			{
 				y = 200 - height;
@@ -77,9 +88,25 @@ package
 					if (Math.abs(_walk_counter) > MAX_VELO * 2) {
 						sprite.frame = sprite.frame == 1 ? 2 : 1; 
 						_walk_counter = 0;
+						if (ball != null) {
+							// roll the ball if has one
+							_hold_roll += 1;
+							if (_hold_roll > 8) {
+								ball.roll();
+							}
+						}
 					} 
 				}
 			
+			}
+			
+			// update ball before player moving
+			// to get a attached effect
+			if (ball != null) {
+				// player holding the ball
+				// TODO roll the ball some how
+				ball.x = x + 3;
+				ball.y = y - 8;
 			}
 			
 			// update with velocity
@@ -88,6 +115,9 @@ package
 			if (x < 0) x = 0;
 			else if (x > Com.WIDTH - width) x = Com.WIDTH - width;
 			FP.console.log(_velo_x);
+			
+			
+			
 				
 			super.update();
 		}
