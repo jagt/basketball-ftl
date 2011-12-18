@@ -14,6 +14,10 @@ package
 		public static const COLOR_2:uint = 0x7B7163;
 		public static const COLOR_3:uint = 0x393829;
 		
+		public static function length(x:Number, y:Number):Number
+		{
+			return Math.sqrt(x*x+y*y);
+		}
 	}
 	
 }

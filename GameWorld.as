@@ -10,6 +10,7 @@ package
 		public var ground:Ground;
 		public var player:Player;
 		public var basket:Basket;
+		public var ball:Ball;
 		
 		public function GameWorld()
 		{
@@ -41,7 +42,7 @@ package
 			ground = new Ground();
 			player = new Player();
 			basket = new Basket();
-			var testball:Ball = new Ball(0, 0);
+			ball = new Ball(player);
 			
 			// adding
 			add(ground);
@@ -49,9 +50,8 @@ package
 			add(player);
 			
 			// debugs
-			add(testball);
+			add(ball);
 			FP.console.enable();
-			player.hold_ball(testball);
 		}
 		
 		override public function update():void

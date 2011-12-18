@@ -51,7 +51,7 @@ package
 		
 		public function hold_ball(free_ball:Ball):void
 		{
-			if (free_ball == null || free_ball.state != Ball.FREE) {
+			if (free_ball == null) {
 				throw "get an bad ball";	
 			}
 			ball = free_ball;

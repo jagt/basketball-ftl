@@ -24,22 +24,27 @@ package
 		
 		private const ROLL_THRESH:Number = 50*50;
 		private const CTHRESH:Number = 10;
+		private const FADE_THRESH:Number = 15;
 		private var _gravity:Number = 250;
 		private var _roll_counter:Number;
+		private var _player:Player;
 		
-		public function Ball(x:Number=0, y:Number=0)
+		public function Ball(player:Player)
 		{
 			sprite = new Spritemap(ImgBall, 8, 8);
 			super(x, y, sprite);
 			setHitbox(8, 8, 0, 0);
+			sprite.add("fadeout", [4, 5, 6], 10, false);
+			sprite.add("fadein", [6, 5, 4, 0], 10, false);
+			_player = player;
 			
 			reset();
 		}
 		
 		public function reset():void
 		{
-			sprite.frame = 0;
-			state = FREE;
+			sprite.play("fadein");
+			_player.hold_ball(this);
 			velocity_x = 100;
 			velocity_y = -50;
 		}
@@ -124,8 +129,23 @@ package
 				
 			}
 			
+			// handle after shoot 
 			// avoid ball fall into the ground
 			if (y > 200-8) y = 200-8;
+			
+			if ( x < -20 
+				|| x > Com.WIDTH + 20
+				|| (y > 180 && Com.length(velocity_x, velocity_y) < FADE_THRESH))
+			{
+				sprite.play("fadeout");
+			}
+			
+			if (state == SHOOTED && sprite.frame == 6)
+			{
+				// fade done, reset to player
+				reset();
+			}
+			
 			
 			super.update();
 		}
