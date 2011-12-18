@@ -11,6 +11,7 @@ package
 		public var text:Text;
 		public var plate:BonusPlate;
 		public var arrow:BasketPointer;
+		public var score:int;
 		private var _ball:Ball;
 		
 		public var total_shots:int;
@@ -41,15 +42,24 @@ package
 			
 			plate.reset();
 			arrow.reset();
-			if (total_shots % 8 == 0)
+//			arrow.enable();
+//			plate.enable();
+			var type:int = total_shots % 5;
+			switch(type)
 			{
-				arrow.enable();
+				case 0:
+				case 2:
+					plate.enable();
+					break;
+				case 1:
+				case 3:
+					arrow.enable();
+					break;
+				case 4:
+					arrow.enable();
+					plate.enable();
+					break;
 			}
-			else if (total_shots % 4 == 0)
-			{
-				plate.enable();
-			}
-			
 		}
 		
 		override public function added():void
@@ -69,21 +79,28 @@ package
 				return "";
 			}
 			
+			var cur_score:int = 0;
+			var delta:int = 1;
+			
 			if (tricks.indexOf("ranged") >= 0)
 			{
 				if (tricks.indexOf("stand") >= 0) {
 					desc.push("inplace");
+					delta += 1;
 				}
 				desc.push("long range");
+				delta += 2;
 			}
 			
 			if (tricks.indexOf("layback") >= 0)
 			{
 				desc.push("layback");
+				delta += 2;
 			}
 			else if (tricks.indexOf("forward") >= 0)
 			{
 				desc.push("rush");
+				delta += 1;
 			}
 			
 			var alley_index:int = tricks.indexOf("alley");
@@ -94,25 +111,30 @@ package
 				if (_ball.collided)
 				{
 					desc.push("rebound");
+					delta += 4;
 				}
 				desc.push("alley");
 				desc.push("oop");
+				delta += 3;
 			} 
 			else if (ground_index >= 0 && alley_index < 0)
 			{
 				desc.push("floor");
+				delta += 5;
 			}
 			else if (ground_index >= 0 && alley_index >=0 && ground_index < alley_index)
 			{
 					desc.push("floor");
 					desc.push("alley");
 					desc.push("oop");
+					delta += 6;
 			}
 			else if (ground_index >= 0 && alley_index >=0 && ground_index > alley_index)
 			{
 					desc.push("air");
 					desc.push("to");
 					desc.push("ground");
+					delta += 6;
 			}
 			
 			var score_cnt:int = 0;
@@ -142,6 +164,7 @@ package
 			if (!_ball.collided)
 			{
 				desc.push("direct");
+				delta += 10;
 			}
 			
 			if (desc.length >= 4) {
@@ -154,7 +177,33 @@ package
 				desc.splice(0, 0, "plain");
 			}
 			
-			return "  " + desc.join(" ");
+			// multiply the scores
+			cur_score = delta * score_cnt;
+			
+			var stars:String = "";
+			if (GameWorld.world.effects.trail_on)
+			{
+				// trail on and scored
+				cur_score *= 2;
+				FP.console.log("TRAILx2");
+				stars += "*";
+			}
+			
+			if (arrow.visible && arrow.basket.check_sensor(arrow.sensor_id))
+			{
+				cur_score *= 2;	
+				FP.console.log("SENSOR*2");
+				stars += "*";
+			}
+			
+			for (var ix:int = 0; ix < 2 - stars.length; ++ix) {
+				stars += " ";
+			}
+			
+			var calc:String = delta + " x " + score_cnt;
+			desc.push(calc);
+			
+			return stars + desc.join(" ");
 		}
 		
 	}

@@ -82,6 +82,7 @@ package
 				ball.velocity_x = 40 + 0.5 * _velo_x;
 				ball.velocity_y = -30 + 0.5 * _velo_y;
 				ball.tricks.push("alley");
+				ball.do_predict = true;
 			}
 			ball.state = Ball.HOLDED;
 		}
@@ -136,6 +137,8 @@ package
 				if (Input.check("jump")) {
 					_velo_y = -80;
 					on_floor = false;
+					
+					if (ball) ball.do_predict = true;
 					
 					if (x < TRICK_RANGED_X)
 					{
@@ -234,10 +237,6 @@ package
 					} 
 				}
 			} 
-			
-			if (!on_floor && ball != null) {
-				ball.do_predict = true;
-			}
 			
 			// update ball before player moving
 			// to get a attached effect

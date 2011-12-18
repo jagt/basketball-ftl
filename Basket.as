@@ -57,6 +57,24 @@ package
 			return false;
 		}
 		
+		public function check_sensor(ix:int):Boolean
+		{
+			switch (ix)
+			{
+				case 0:
+					return _b1_cd;
+					break;
+				case 1:
+					return _b2_cd;
+					break;
+				case 2:
+					return _b3_cd;
+					break;
+				default:
+					throw "wrong ix, shoudl be 0-2"
+			}
+		}
+		
 		public function reset():void
 		{
 			_b1_cd = false;

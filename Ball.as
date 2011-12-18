@@ -70,6 +70,7 @@ package
 			state = FREE;
 			_player.hold_ball(this);
 			collided = false;
+			do_predict = false;
 		}
 		
 		public function roll():void
