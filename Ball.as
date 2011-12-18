@@ -62,10 +62,10 @@ package
 				FP.console.log(trick);
 			}
 			// update status
-			GameWorld.world.status.text.text = 
-				GameWorld.world.status.calculate();
+			GameWorld.world.status.setup();
 			
 			GameWorld.world.basket.reset();
+			GameWorld.world.effects.trail_on = false;
 			tricks.length = 0; // clear tricks
 			state = FREE;
 			_player.hold_ball(this);

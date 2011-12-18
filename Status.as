@@ -9,7 +9,10 @@ package
 	public class Status extends Entity
 	{
 		public var text:Text;
+		public var plate:BonusPlate;
 		private var _ball:Ball;
+		
+		public var total_shots:int;
 		
 		public function Status(ball:Ball)
 		{
@@ -22,7 +25,30 @@ package
 			  , "color" : Com.COLOR_3
 			}); 
 			_ball = ball;
+			total_shots = 0;
+			
+			plate = new BonusPlate();
 			super(0, 30, text);
+		}
+		
+		// called during ball reset
+		public function setup():void
+		{
+			text.text = calculate();
+			total_shots += 1;
+			
+			plate.reset();
+			if (total_shots % 3 == 0)
+			{
+				plate.enable();
+			}
+			
+		}
+		
+		override public function added():void
+		{
+			super.added();
+			world.add(plate);
 		}
 		
 		public function calculate():String

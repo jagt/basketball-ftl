@@ -150,6 +150,13 @@ package
 					{
 						if (ball) ball.tricks.push("stand");
 					}
+					
+					// bonus turns on trail
+					if (collide("plate", x, y))
+					{
+						GameWorld.world.effects.trail_on = true;
+					}
+					
 					sprite.frame = 3;
 				}
 				
