@@ -10,6 +10,7 @@ package
 	{
 		public var text:Text;
 		public var plate:BonusPlate;
+		public var arrow:BasketPointer;
 		private var _ball:Ball;
 		
 		public var total_shots:int;
@@ -28,6 +29,7 @@ package
 			total_shots = 0;
 			
 			plate = new BonusPlate();
+			arrow = new BasketPointer(GameWorld.world.basket);
 			super(0, 30, text);
 		}
 		
@@ -38,7 +40,12 @@ package
 			total_shots += 1;
 			
 			plate.reset();
-			if (total_shots % 3 == 0)
+			arrow.reset();
+			if (total_shots % 8 == 0)
+			{
+				arrow.enable();
+			}
+			else if (total_shots % 4 == 0)
 			{
 				plate.enable();
 			}
@@ -49,6 +56,7 @@ package
 		{
 			super.added();
 			world.add(plate);
+			world.add(arrow);
 		}
 		
 		public function calculate():String
