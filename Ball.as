@@ -108,12 +108,24 @@ package
 					else if (velocity_y < -CTHRESH && dy < other.bottom)
 					{
 						// hit top
-						velocity_y = - velocity_y * 0.8;
+						velocity_y = - velocity_y * 0.5;
+					}
+				}
+				
+				other = collide("sensor", dx, dy);
+				if (other != null)
+				{
+					if (velocity_y > 0)
+					{
+						GameWorld.world.basket.trigger(other);
 					}
 				}
 					
 				
 			}
+			
+			// avoid ball fall into the ground
+			if (y > 200-8) y = 200-8;
 			
 			super.update();
 		}

@@ -13,17 +13,27 @@ package
 		
 		public function GameWorld()
 		{
-			super();
 			world = this;
+			super();
 		}
 		
-		public function add_block(x:int, y:int, width:int, height:int):void
+		public function add_block(x:int, y:int, width:int, height:int, type:String):Entity
 		{
 			// add block to the fucking world
 			var block:Entity = new Entity(x, y);
 			block.setHitbox(width, height);
-			block.type = "block";
+			block.type = type;
 			add(block);
+			
+			return block;
+		}
+		
+		public function score(type:String, value:String, score:int):void
+		{
+			if (type == "getscore") {
+				FP.console.log(value, score);
+			}
+			
 		}
 		
 		override public function begin():void {
@@ -42,8 +52,6 @@ package
 			add(testball);
 			FP.console.enable();
 			player.hold_ball(testball);
-			FP.console.log(FP.buffer.height);
-			FP.console.log(FP.buffer.width);
 		}
 		
 		override public function update():void

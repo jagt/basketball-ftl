@@ -134,7 +134,6 @@ package
 						}
 						if (_velo_y > -10)
 						{
-							FP.console.log("bonus");
 							ball.velocity_y -= BALL_BONUS_CHARGE_Y * dt;
 						}
 					}
