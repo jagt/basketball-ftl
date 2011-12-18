@@ -208,7 +208,7 @@ package
 					sy:Number = sensor.y;
 				
 				var ix:Number = x + (dx - x) * (sy - y) / (dy - y); 
-				if ((sx1 < ix && ix < sx2))
+				if ((sx1 < ix && ix < sx2) && GameWorld.world.basket.trigger(sensor))
 				{
 					// collided	
 					GameWorld.world.effects.score_effect(sensor);

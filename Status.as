@@ -13,7 +13,7 @@ package
 		
 		public function Status(ball:Ball)
 		{
-			text = new Text("Placehold Long Long Long Long lOng\n LOng Long LOng lOng Long", 0, 0, {
+			text = new Text("***", 0, 0, {
 				"font" : "GameGirl"
 			  , "size" : 8
 			  , "align" : "left"
@@ -100,8 +100,8 @@ package
 					break;
 			}
 			
-			if (desc.length > 4) {
-				desc.splice(4, 0, '\n');
+			if (desc.length >= 4) {
+				desc.splice(4, 0, '\n ');
 				FP.console.log("wtf");
 				FP.console.log(desc.join(" "));
 			}

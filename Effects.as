@@ -25,11 +25,11 @@ package
 		
 		public function score_effect(sensor:Entity):void
 		{
-			var startx:Number = sensor.x - 2;
-			var endx:Number = sensor.x + sensor.width - 2;
+			var startx:Number = sensor.x;
+			var endx:Number = sensor.x + sensor.width;
 			for ( ; startx < endx; startx += 3)
 			{
-				emit.emit("score", startx, sensor.y - 6);
+				emit.emit("score", startx, (startx % 2) * 2 + sensor.y - 5);
 			}
 		}
 		
@@ -44,7 +44,7 @@ package
 			
 			emit.newType("score", [5, 4]);
 			emit.setAlpha("score", 1, 1);
-			emit.setMotion("score", 270, 5, 0.2, 20, 2, 0.1);
+			emit.setMotion("score", 270, 4, 0.15, 20, 2, 0.1);
 			
 			super(0, 0, emit);
 		}
