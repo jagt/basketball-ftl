@@ -146,7 +146,7 @@ package
 						if (ball) ball.tricks.push("layback");
 					}
 					
-					if (_velo_x < 10 && _velo_x > -10)
+					if (Math.abs(_velo_x) < 5)
 					{
 						if (ball) ball.tricks.push("stand");
 					}

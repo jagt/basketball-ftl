@@ -63,6 +63,7 @@ package
 			GameWorld.world.status.text.text = 
 				GameWorld.world.status.calculate();
 			
+			GameWorld.world.basket.reset();
 			tricks.length = 0; // clear tricks
 			state = FREE;
 			_player.hold_ball(this);
@@ -126,36 +127,45 @@ package
 				if (other != null) 
 				{
 					// y axis causing collision
-					if (velocity_y > CTHRESH && dy+height > other.top)
+					if (dy+height > other.top)
 					{
 						// hit bottom
 						velocity_y = - velocity_y * 0.7;
 						if (other is Ground && state == SHOOTED)
 							tricks.push("ground");
 					}
-					else if (velocity_y < -CTHRESH && dy < other.bottom)
+					else if (dy < other.bottom)
 					{
 						// hit top
 						velocity_y = - velocity_y * 0.5;
 					}
 				}
 				
+				// recalc dx and dy, since next frame
+				// velocity changes a lot
+				dx = x + velocity_x * dt;
+				dy = y + (velocity_y + _gravity * dt)  * dt;
+				
 				// TODO high speed ball are ignored this sucks
 				// only test current position to avoid
 				// fake scores
-				other = collide("sensor", x, y);
-				if (other != null)
-				{
-					if (velocity_y > 0)
-					{
-						if (GameWorld.world.basket.trigger(other)) 
-						{
-							GameWorld.world.effects.score_effect(other);
-							tricks.push("score");
-							state = SCORED;
-						}
-					}
-				}
+				sensor_collision(GameWorld.world.basket.sensor1, dx, dy);
+				sensor_collision(GameWorld.world.basket.sensor2, dx, dy);
+				sensor_collision(GameWorld.world.basket.sensor3, dx, dy);
+				
+//				other = collide("sensor", x, y);
+//				if (other != null)
+//				{
+//					if (velocity_y > 0)
+//					{
+//						if (GameWorld.world.basket.trigger(other)) 
+//						{
+//							GameWorld.world.effects.score_effect(other);
+//							tricks.push("score");
+//							state = SCORED;
+//						}
+//					}
+//				}
 				
 				// collide with head
 				// test current ball position
@@ -187,6 +197,25 @@ package
 			
 			
 			super.update();
+		}
+		
+		private function sensor_collision(sensor:Entity, dx:Number, dy:Number):void
+		{
+			if (velocity_y > 0 && y < sensor.y && dy > sensor.y)
+			{
+				var sx1:Number = sensor.x,
+					sx2:Number = sensor.x + sensor.width,
+					sy:Number = sensor.y;
+				
+				var ix:Number = x + (dx - x) * (sy - y) / (dy - y); 
+				if ((sx1 < ix && ix < sx2))
+				{
+					// collided	
+					GameWorld.world.effects.score_effect(sensor);
+					tricks.push("score");
+					state = SCORED;
+				}
+			}
 		}
 		
 		private function predict_draw(vx:Number, vy:Number):void

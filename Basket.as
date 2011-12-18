@@ -21,40 +21,48 @@ package
 		// use a score counter to prevent buggy constant
 		// cause it may happen sometimes
 		private const COOLDOWN:Number = 10 * Com.INTERVAL;
-		private var _b1_cd:Number = -1;
-		private var _b2_cd:Number = -1;
-		private var _b3_cd:Number = -1;
+		private var _b1_cd:Boolean;
+		private var _b2_cd:Boolean;
+		private var _b3_cd:Boolean;
 		
-		private var _sensor1:Entity;
-		private var _sensor2:Entity;
-		private var _sensor3:Entity;
+		public var sensor1:Entity;
+		public var sensor2:Entity;
+		public var sensor3:Entity;
 		
 		public function trigger(sensor:Entity):Boolean
 		{
 			var world:GameWorld = GameWorld.world;
-			if (sensor == _sensor1) {
-				if (_b1_cd < 0)
+			if (sensor == sensor1) {
+				if (!_b1_cd)
 				{
 					world.score("getscore", "1pt", 1);
-					_b1_cd = 0;
+					_b1_cd = true;
 					return true;
 				}
-			} else if (sensor == _sensor2) {
-				if (_b2_cd < 0)
+			} else if (sensor == sensor2) {
+				if (!_b2_cd)
 				{
 					world.score("getscore", "2pt", 2);
-					_b2_cd = 0;
+					_b2_cd = true;
 					return true;
 				}
-			} else if (sensor == _sensor3) {
-				if (_b3_cd < 0)
+			} else if (sensor == sensor3) {
+				if (!_b3_cd)
 				{
 					world.score("getscore", "3pt", 3);
-					_b3_cd = 0;
+					_b3_cd = true;
 					return true;
 				}
 			}
 			return false;
+		}
+		
+		public function reset():void
+		{
+			_b1_cd = false;
+			_b2_cd = false;
+			_b3_cd = false;
+			
 		}
 		
 		public function Basket()
@@ -71,30 +79,19 @@ package
 			world.add_block(212, 161, 2, 5, "block");
 			world.add_block(230, 144, 4, 23, "block");
 			
-			_sensor3 = world.add_block(217,  57, 11, 3, "sensor");
-			_sensor2 = world.add_block(217, 112, 11, 3, "sensor");
-			_sensor1 = world.add_block(217, 165, 11, 3, "sensor");
+			sensor3 = world.add_block(213,  55, 14, 3, "sensor");
+			sensor2 = world.add_block(213, 110, 14, 3, "sensor");
+			sensor1 = world.add_block(213, 163, 14, 3, "sensor");
+			
+			reset();
 		}
 		
 		override public function update():void
 		{
-			// update sensor cool downs
-			_b1_cd += FP.elapsed;
-			_b2_cd += FP.elapsed;
-			_b3_cd += FP.elapsed;
-			if (_b1_cd > 10 * Com.INTERVAL) {
-				_b1_cd = -1;
-			}
-			if (_b2_cd > 10 * Com.INTERVAL) {
-				_b2_cd = -1;
-			}
-			if (_b3_cd > 10 * Com.INTERVAL) {
-				_b3_cd = -1;
-			}
 			
 			if (Input.pressed(Key.T))
 			{
-				GameWorld.world.effects.score_effect(_sensor3);
+				GameWorld.world.effects.score_effect(sensor3);
 			}
 			
 			
