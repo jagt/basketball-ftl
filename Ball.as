@@ -22,6 +22,8 @@ package
 		public var velocity_y:Number;
 		public var state:int;
 		public var do_predict:Boolean;
+		public var delta_x:Number;
+		public var delta_y:Number;
 		
 		private const ROLL_THRESH:Number = 50*50;
 		private const CTHRESH:Number = 10;
@@ -41,6 +43,8 @@ package
 			sprite.add("fadein", [6, 5, 4, 0], 10, false);
 			_player = player;
 			tricks = new Vector.<String>();
+			velocity_x = 0;
+			velocity_y = 0;
 			
 			reset();
 		}
@@ -80,8 +84,10 @@ package
 			}
 			// update with velocity only when not holded
 			velocity_y += _gravity * FP.elapsed;
-			x += velocity_x * FP.elapsed;
-			y += velocity_y * FP.elapsed;
+			delta_x = velocity_x * FP.elapsed;
+			delta_y = velocity_y * FP.elapsed;
+			x += delta_x;
+			y += delta_y;
 			
 			if (state >= SHOOTED)
 			{
@@ -137,6 +143,7 @@ package
 					{
 						if (GameWorld.world.basket.trigger(other)) 
 						{
+							GameWorld.world.effects.score_effect(other);
 							tricks.push("score");
 							state = SCORED;
 						}
@@ -148,7 +155,8 @@ package
 				if (collideWith(_player.head, x, y))
 				{
 					// do not hold scored ball
-					if (state == SHOOTED)
+					// nor get ball when standing on floor
+					if (state == SHOOTED && !_player.on_floor)
 						_player.hold_ball(this);
 				}
 			}

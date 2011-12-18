@@ -5,6 +5,7 @@ package
 	import net.flashpunk.Graphic;
 	import net.flashpunk.Mask;
 	import net.flashpunk.graphics.Stamp;
+	import net.flashpunk.utils.*;
 	
 	public class Basket extends Entity
 	{
@@ -89,6 +90,11 @@ package
 			}
 			if (_b3_cd > 10 * Com.INTERVAL) {
 				_b3_cd = -1;
+			}
+			
+			if (Input.pressed(Key.T))
+			{
+				GameWorld.world.effects.score_effect(_sensor3);
 			}
 			
 			

@@ -12,6 +12,7 @@ package
 		public var sprite:Spritemap;
 		public var ball:Ball; // current ball or empty
 		public var head:Entity;
+		public var on_floor:Boolean;
 		
 		private const MAX_VELO:Number = 60;
 		private const ACC:Number = 100;
@@ -29,7 +30,6 @@ package
 		
 		private var _velo_x:Number = 0;
 		private var _velo_y:Number = 0;
-		private var _on_floor:Boolean = true;
 		private var _walk_counter:Number;
 		private var _hold_roll:int;
 		private var _is_dirty_ball:Boolean = false;
@@ -97,16 +97,16 @@ package
 			if (y >= 200 - height)
 			{
 				y = 200 - height;
-				if (!_on_floor && _is_dirty_ball && ball)
+				if (!on_floor && _is_dirty_ball && ball)
 				{
 					// just hit the floor
 					shoot_ball();
 				}
-				_on_floor = true;
+				on_floor = true;
 				_velo_y = 0;
 			}
 			
-			if (_on_floor)
+			if (on_floor)
 			{
 				if (Input.check("left"))
 				{
@@ -128,7 +128,7 @@ package
 				
 				if (Input.check("jump")) {
 					_velo_y = -80;
-					_on_floor = false;
+					on_floor = false;
 					// reduce velo_x for a more real feeling
 					if (_velo_x > 40) 
 					{
@@ -194,7 +194,7 @@ package
 			}
 			
 			// animation
-			if (_on_floor)
+			if (on_floor)
 			{
 				if (!Input.check("left") && !Input.check("right") && Math.abs(_velo_x) < SLIDE_THRASH) {
 					sprite.frame = 0;
@@ -220,7 +220,7 @@ package
 				}
 			} 
 			
-			if (!_on_floor && ball != null) {
+			if (!on_floor && ball != null) {
 				ball.do_predict = true;
 			}
 			
