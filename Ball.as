@@ -51,6 +51,7 @@ package
 			tricks.length = 0; // clear tricks
 			state = FREE;
 			_player.hold_ball(this);
+			_player.plate_jumped = false;
 			collided = false;
 		}
 		
@@ -61,14 +62,15 @@ package
 			for each (var trick:String in tricks) {
 				FP.console.log(trick);
 			}
+			GameWorld.world.effects.trail_on = false;
 			// update status
 			GameWorld.world.status.setup();
 			
 			GameWorld.world.basket.reset();
-			GameWorld.world.effects.trail_on = false;
 			tricks.length = 0; // clear tricks
 			state = FREE;
 			_player.hold_ball(this);
+			_player.plate_jumped = false;
 			collided = false;
 			do_predict = false;
 		}

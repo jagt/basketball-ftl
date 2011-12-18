@@ -14,6 +14,7 @@ package
 		public var head:Entity;
 		public var on_floor:Boolean;
 		public var can_alley:Boolean;
+		public var plate_jumped:Boolean;
 		// player can only do alley after hit the ground
 		// after shooting
 		
@@ -153,18 +154,23 @@ package
 					if (_velo_x < -40)
 					{
 						_velo_x += 20;
-						if (ball) ball.tricks.push("layback");
 					}
 					
+					if (_velo_x < -25)
+					{
+						if (ball) ball.tricks.push("layback");
+					}
 					if (Math.abs(_velo_x) < 5)
 					{
 						if (ball) ball.tricks.push("stand");
 					}
 					
 					// bonus turns on trail
-					if (collide("plate", x, y))
+					if (GameWorld.world.status.plate.collidable)
 					{
-						GameWorld.world.effects.trail_on = true;
+						if (!plate_jumped && collideWith(GameWorld.world.status.plate, x, y) == null)
+							GameWorld.world.status.game_over();
+						plate_jumped = true;
 					}
 					
 					sprite.frame = 3;

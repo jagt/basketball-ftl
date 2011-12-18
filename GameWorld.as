@@ -68,7 +68,11 @@ package
 			add(status);
 			
 			// debugs
-			FP.console.enable();
+//			FP.console.enable();
+			
+			// inits
+			status.setup();
+			status.info.visible = false;
 		}
 		
 		override public function update():void
