@@ -179,9 +179,10 @@ package
 //					}
 //				}
 				
+				// TODO fix holded just after release
 				// collide with head
 				// test current ball position
-				if (collideWith(_player.head, x, y))
+				if (_player.can_alley && collideWith(_player.head, x, y))
 				{
 					// do not hold scored ball
 					// nor get ball when standing on floor

@@ -18,7 +18,7 @@ package
 		{
 			_basket = basket;
 			_sprite = new Spritemap(ImgArrow, 14, 9);
-			_sprite.add("point", [0, 1], 10);
+			_sprite.add("point", [0, 1], 4);
 			super(189, 0, _sprite);
 			
 			visible = false;

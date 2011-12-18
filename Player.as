@@ -13,6 +13,9 @@ package
 		public var ball:Ball; // current ball or empty
 		public var head:Entity;
 		public var on_floor:Boolean;
+		public var can_alley:Boolean;
+		// player can only do alley after hit the ground
+		// after shooting
 		
 		private const MAX_VELO:Number = 60;
 		private const ACC:Number = 100;
@@ -54,6 +57,7 @@ package
 			
 			sprite.add("walk", [1, 2], 10);
 			sprite.frame = 0;
+			on_floor = true;
 		}
 		
 		public function hold_ball(free_ball:Ball):void
@@ -67,7 +71,7 @@ package
 				// a clean ball
 				ball.velocity_x = 100;
 				ball.velocity_y = -50;
-				_is_dirty_ball = false;
+				_is_dirty_ball = on_floor;
 				
 			}
 			else if (ball.state == Ball.SHOOTED)
@@ -84,6 +88,7 @@ package
 		
 		public function shoot_ball():void
 		{
+			can_alley = false;
 			ball.do_predict = false;
 			ball.state = Ball.SHOOTED;
 			ball = null;
@@ -103,6 +108,8 @@ package
 					shoot_ball();
 				}
 				on_floor = true;
+				_is_dirty_ball = true;
+				can_alley = true;
 				_velo_y = 0;
 			}
 			
