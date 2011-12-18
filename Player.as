@@ -11,6 +11,7 @@ package
 		
 		public var sprite:Spritemap;
 		public var ball:Ball; // current ball or empty
+		public var head:Entity;
 		
 		private const MAX_VELO:Number = 60;
 		private const ACC:Number = 100;
@@ -23,6 +24,7 @@ package
 		private const BALL_CHARGE_X_RIGHT:Number = 40;
 		private const BALL_CHARGE_X_LEFT:Number = 20;
 		private const BALL_BONUS_CHARGE_Y:Number = 10;
+		private const TRICK_RANGED_X:Number = 50;
 		
 		
 		private var _velo_x:Number = 0;
@@ -30,12 +32,16 @@ package
 		private var _on_floor:Boolean = true;
 		private var _walk_counter:Number;
 		private var _hold_roll:int;
+		private var _is_dirty_ball:Boolean = false;
 		
 		public function Player()
 		{
 			sprite = new Spritemap(ImgPlayer, 12, 16);
 			setHitbox(12, 16);
 			super(20, 200 - height, sprite);
+			head = new Entity(x, y);
+			head.setHitbox(8, 4);
+			
 			
 			Input.define("left", Key.LEFT, Key.A);
 			Input.define("right", Key.RIGHT, Key.D);
@@ -61,12 +67,17 @@ package
 				// a clean ball
 				ball.velocity_x = 100;
 				ball.velocity_y = -50;
+				_is_dirty_ball = false;
+				
 			}
 			else if (ball.state == Ball.SHOOTED)
 			{
 				// TODO shooted ball should not use
-				// same velo as a free ball
-				
+				//      same velo as a free ball
+				_is_dirty_ball = true;
+				ball.velocity_x = 40 + 0.5 * _velo_x;
+				ball.velocity_y = -30 + 0.5 * _velo_y;
+				ball.tricks.push("alley");
 			}
 			ball.state = Ball.HOLDED;
 		}
@@ -85,7 +96,7 @@ package
 			if (y >= 200 - height)
 			{
 				y = 200 - height;
-				if (!_on_floor && ball)
+				if (!_on_floor && _is_dirty_ball && ball)
 				{
 					// just hit the floor
 					shoot_ball();
@@ -118,8 +129,25 @@ package
 					_velo_y = -80;
 					_on_floor = false;
 					// reduce velo_x for a more real feeling
-					if (_velo_x > 40) _velo_x -= 10;
-					if (_velo_x < -40) _velo_x += 20;
+					if (_velo_x > 40) 
+					{
+						_velo_x -= 10;
+						if (ball) ball.tricks.push("forward");
+					}
+					if (_velo_x < -40)
+					{
+						_velo_x += 20;
+						if (ball) ball.tricks.push("layback");
+					}
+					
+					if (_velo_x < 10 && _velo_x > -10)
+					{
+						if (ball) ball.tricks.push("stand");
+					}
+					if (x < TRICK_RANGED_X)
+					{
+						if (ball) ball.tricks.push("ranged");
+					}
 					sprite.frame = 3;
 				}
 				
@@ -211,6 +239,10 @@ package
 			else if (x > Com.WIDTH - width) x = Com.WIDTH - width;
 			
 			super.update();
+			
+			// precisely sync head position
+			head.x = x + 2;
+			head.y = y;
 		}
 	}
 }

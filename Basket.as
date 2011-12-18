@@ -81,13 +81,13 @@ package
 			_b1_cd += FP.elapsed;
 			_b2_cd += FP.elapsed;
 			_b3_cd += FP.elapsed;
-			if (_b1_cd > 4 * Com.INTERVAL) {
+			if (_b1_cd > 10 * Com.INTERVAL) {
 				_b1_cd = -1;
 			}
-			if (_b2_cd > 4 * Com.INTERVAL) {
+			if (_b2_cd > 10 * Com.INTERVAL) {
 				_b2_cd = -1;
 			}
-			if (_b3_cd > 4 * Com.INTERVAL) {
+			if (_b3_cd > 10 * Com.INTERVAL) {
 				_b3_cd = -1;
 			}
 			

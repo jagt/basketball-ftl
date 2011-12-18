@@ -1,20 +1,29 @@
 package
 {
+	import flash.display.BitmapData;
+	
 	import net.flashpunk.*;
 	import net.flashpunk.debug.Console;
+	import net.flashpunk.graphics.Stamp;
 	import net.flashpunk.utils.*;
 	
 	public class GameWorld extends World
 	{
+		[Embed(source = 'data/bg.png')]
+		private const ImgBg:Class;
+		
 		public static var world:GameWorld;
 		public var ground:Ground;
 		public var player:Player;
 		public var basket:Basket;
 		public var ball:Ball;
 		
+		private var _bg:Entity;
+		
 		public function GameWorld()
 		{
-			world = this;
+			world = this; // set singleton
+			_bg = new Entity(0, 0, new Stamp(ImgBg));
 			super();
 		}
 		
@@ -45,9 +54,11 @@ package
 			ball = new Ball(player);
 			
 			// adding
+			add(_bg);
 			add(ground);
 			add(basket);
 			add(player);
+			add(player.head) // add for collision and debug drawing
 			
 			// debugs
 			add(ball);
@@ -62,5 +73,6 @@ package
 			}
 			super.update();
 		}
+		
 	}
 }

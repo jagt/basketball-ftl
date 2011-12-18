@@ -11,6 +11,7 @@ package
 		public static const HOLDED:int = 0;
 		public static const FREE:int = 1
 		public static const SHOOTED:int = 2;
+		public static const SCORED:int = 3;
 		public static const SHOOT_VELO_X:Number = 100;
 		public static const SHOOT_VELO_Y:Number = -50;
 		
@@ -29,6 +30,8 @@ package
 		private var _roll_counter:Number;
 		private var _player:Player;
 		
+		public var tricks:Vector.<String>;
+		
 		public function Ball(player:Player)
 		{
 			sprite = new Spritemap(ImgBall, 8, 8);
@@ -37,6 +40,7 @@ package
 			sprite.add("fadeout", [4, 5, 6], 10, false);
 			sprite.add("fadein", [6, 5, 4, 0], 10, false);
 			_player = player;
+			tricks = new Vector.<String>();
 			
 			reset();
 		}
@@ -44,6 +48,11 @@ package
 		public function reset():void
 		{
 			sprite.play("fadein");
+			FP.console.log("resetting ---------");
+			for each (var trick:String in tricks) {
+				FP.console.log(trick);
+			}
+			tricks.length = 0; // clear tricks
 			state = FREE;
 			_player.hold_ball(this);
 		}
@@ -74,7 +83,7 @@ package
 			x += velocity_x * FP.elapsed;
 			y += velocity_y * FP.elapsed;
 			
-			if (state == SHOOTED)
+			if (state >= SHOOTED)
 			{
 				var dt:Number = FP.elapsed * 1;
 				// handle collision
@@ -83,6 +92,7 @@ package
 				// resolve in x and y seperately
 				var other:Entity;
 				
+				// TODO fix the funky collision if has more time
 				other = collide("block", dx, y);
 				if (other != null)
 				{
@@ -95,9 +105,8 @@ package
 					else if (velocity_x < -CTHRESH && dx < other.right)
 					{
 						// hit left
-						velocity_x = -velocity_x * 0.3;
+						velocity_x = -velocity_x * 0.5;
 					}
-					
 				}
 				
 				other = collide("block", x, dy);
@@ -108,6 +117,8 @@ package
 					{
 						// hit bottom
 						velocity_y = - velocity_y * 0.7;
+						if (other is Ground)
+							tricks.push("ground");
 					}
 					else if (velocity_y < -CTHRESH && dy < other.bottom)
 					{
@@ -116,16 +127,30 @@ package
 					}
 				}
 				
-				other = collide("sensor", dx, dy);
+				// TODO high speed ball are ignored this sucks
+				// only test current position to avoid
+				// fake scores
+				other = collide("sensor", x, y);
 				if (other != null)
 				{
 					if (velocity_y > 0)
 					{
-						GameWorld.world.basket.trigger(other);
+						if (GameWorld.world.basket.trigger(other)) 
+						{
+							tricks.push("score");
+							state = SCORED;
+						}
 					}
 				}
-					
 				
+				// collide with head
+				// test current ball position
+				if (collideWith(_player.head, x, y))
+				{
+					// do not hold scored ball
+					if (state == SHOOTED)
+						_player.hold_ball(this);
+				}
 			}
 			
 			// handle after shoot 
@@ -139,7 +164,7 @@ package
 				sprite.play("fadeout");
 			}
 			
-			if (state == SHOOTED && sprite.frame == 6)
+			if (state >= SHOOTED && sprite.frame == 6)
 			{
 				// fade done, reset to player
 				reset();
