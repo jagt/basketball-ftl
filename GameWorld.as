@@ -67,7 +67,7 @@ package
 		
 		override public function update():void
 		{
-			if (Input.pressed("reset") && ball.state == Ball.SHOOTED)
+			if (Input.pressed("reset") && ball.state >= Ball.SHOOTED)
 			{
 				ball.sprite.play("fadeout");
 			}

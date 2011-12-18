@@ -84,6 +84,7 @@ package
 		
 		public function shoot_ball():void
 		{
+			ball.do_predict = false;
 			ball.state = Ball.SHOOTED;
 			ball = null;
 		}
@@ -219,7 +220,7 @@ package
 				}
 			} 
 			
-			if (ball != null) {
+			if (!_on_floor && ball != null) {
 				ball.do_predict = true;
 			}
 			
