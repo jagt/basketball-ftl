@@ -54,6 +54,7 @@ package
 			
 			sprite.add("walk", [1, 2], 10);
 			sprite.frame = 0;
+			on_floor = true;
 		}
 		
 		public function hold_ball(free_ball:Ball):void
@@ -62,19 +63,21 @@ package
 				throw "get an bad ball";	
 			}
 			ball = free_ball;
+			_is_dirty_ball = true;
 			if (ball.state == Ball.FREE)
 			{
 				// a clean ball
 				ball.velocity_x = 100;
 				ball.velocity_y = -50;
-				_is_dirty_ball = false;
+				// handle get new ball in mid air
+				if (!on_floor)
+					_is_dirty_ball = false;
 				
 			}
 			else if (ball.state == Ball.SHOOTED)
 			{
 				// TODO shooted ball should not use
 				//      same velo as a free ball
-				_is_dirty_ball = true;
 				ball.velocity_x = 40 + 0.5 * _velo_x;
 				ball.velocity_y = -30 + 0.5 * _velo_y;
 				ball.tricks.push("alley");
@@ -103,6 +106,7 @@ package
 					shoot_ball();
 				}
 				on_floor = true;
+				_is_dirty_ball = true;
 				_velo_y = 0;
 			}
 			
@@ -194,8 +198,9 @@ package
 						ball.velocity_x -= BALL_DRAG_X * dt;
 					}
 				}
-				
-				if (Input.released("jump")) {
+				else
+				{
+//				if (Input.released("jump")) {
 					shoot_ball();
 					sprite.frame = 4;
 				}
