@@ -73,11 +73,11 @@ package
 			// add corresponding hit boxes
 			var world:GameWorld = GameWorld.world;
 			world.add_block(212, 53, 2, 5, "block");
-			world.add_block(230, 36, 4, 23, "block");
+			world.add_block(230, 36, 4, 18, "block");
 			world.add_block(212, 108, 2, 5, "block");
-			world.add_block(230, 91, 4, 23, "block");
+			world.add_block(230, 91, 4, 18, "block");
 			world.add_block(212, 161, 2, 5, "block");
-			world.add_block(230, 144, 4, 23, "block");
+			world.add_block(230, 144, 4, 18, "block");
 			
 			sensor3 = world.add_block(213,  55, 14, 3, "sensor");
 			sensor2 = world.add_block(213, 110, 14, 3, "sensor");

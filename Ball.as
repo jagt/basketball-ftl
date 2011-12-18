@@ -24,6 +24,7 @@ package
 		public var do_predict:Boolean;
 		public var delta_x:Number;
 		public var delta_y:Number;
+		public var collided:Boolean;
 		
 		private const ROLL_THRESH:Number = 50*50;
 		private const CTHRESH:Number = 10;
@@ -50,6 +51,7 @@ package
 			tricks.length = 0; // clear tricks
 			state = FREE;
 			_player.hold_ball(this);
+			collided = false;
 		}
 		
 		public function reset():void
@@ -67,6 +69,7 @@ package
 			tricks.length = 0; // clear tricks
 			state = FREE;
 			_player.hold_ball(this);
+			collided = false;
 		}
 		
 		public function roll():void
@@ -121,6 +124,10 @@ package
 						// hit left
 						velocity_x = -velocity_x * 0.5;
 					}
+					
+					// if collide before scoring
+					if (state == SHOOTED)
+						collided = true;
 				}
 				
 				other = collide("block", x, dy);
@@ -136,9 +143,14 @@ package
 					}
 					else if (dy < other.bottom)
 					{
+						// if collide before scoring
+						// except ground
+						if (state == SHOOTED)
+							collided = true;
 						// hit top
 						velocity_y = - velocity_y * 0.5;
 					}
+					
 				}
 				
 				// recalc dx and dy, since next frame
@@ -195,6 +207,7 @@ package
 				reset();
 			}
 			
+			FP.console.log(collided);
 			
 			super.update();
 		}

@@ -57,7 +57,12 @@ package
 			
 			if (alley_index >= 0 && ground_index < 0)
 			{
-				desc.push("air");
+				if (_ball.collided)
+				{
+					desc.push("rebound");
+				}
+				desc.push("alley");
+				desc.push("oop");
 			} 
 			else if (ground_index >= 0 && alley_index < 0)
 			{
@@ -65,7 +70,7 @@ package
 			}
 			else if (ground_index >= 0 && alley_index >=0 && ground_index < alley_index)
 			{
-					desc.push("solo");
+					desc.push("floor");
 					desc.push("alley");
 					desc.push("oop");
 			}
@@ -98,6 +103,11 @@ package
 					desc.push("full");
 					desc.push("house");
 					break;
+			}
+			
+			if (!_ball.collided)
+			{
+				desc.push("direct");
 			}
 			
 			if (desc.length >= 4) {
