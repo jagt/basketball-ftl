@@ -4,6 +4,7 @@ package
 	
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.World;
 	import net.flashpunk.graphics.Stamp;
 	import net.flashpunk.utils.*;
@@ -19,10 +20,14 @@ package
 		[Embed(source = 'data/howto.png')]
 		private const ImgHowto:Class;
 		
+		[Embed(source = 'data/menu.mp3')]
+		private const SndMenu:Class;
+		
 		private var _menu:Entity;
 		private var _cur:Entity;
 		private var _how:Entity;
 		private var _option:int = 0;
+		private var _bgm:Sfx;
 		
 		override public function begin():void
 		{
@@ -34,6 +39,8 @@ package
 			_how = addGraphic(new Stamp(ImgHowto, 0, 0));
 			_how.visible = false;
 			
+			_bgm = new Sfx(SndMenu);
+			
 			Input.define("left", Key.LEFT, Key.A);
 			Input.define("right", Key.RIGHT, Key.D);
 			Input.define("up", Key.UP, Key.W);
@@ -41,6 +48,7 @@ package
 			Input.define("jump", Key.Z, Key.SPACE);
 			Input.define("reset", Key.X, Key.R);
 			
+			_bgm.loop(0.7);
 		}
 		
 		override public function update():void
@@ -74,6 +82,7 @@ package
 				
 				if (_option == 0)
 				{
+					_bgm.stop();
 					FP.world = new GameWorld();
 				}
 				

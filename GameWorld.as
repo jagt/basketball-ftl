@@ -12,6 +12,9 @@ package
 		[Embed(source = 'data/bg.png')]
 		private const ImgBg:Class;
 		
+		[Embed(source = 'data/bgm.mp3')]
+		private const SndBgm:Class;
+		
 		public static var world:GameWorld;
 		public var ground:Ground;
 		public var player:Player;
@@ -21,13 +24,14 @@ package
 		public var status:Status;
 		
 		private var _bg:Entity;
-		
-		private var _froze_cnt:int = 10;
+		private var _bgm:Sfx;
+		private var _froze_cnt:int = 40;
 		
 		public function GameWorld()
 		{
 			world = this; // set singleton
 			_bg = new Entity(0, 0, new Stamp(ImgBg));
+			_bgm = new Sfx(SndBgm);
 			super();
 		}
 		
@@ -81,8 +85,11 @@ package
 		{
 			if (_froze_cnt > 0) {
 				--_froze_cnt;
+				if (_froze_cnt < 1)
+					_bgm.loop(0.7);
 				return;
 			}
+			
 			if (Input.pressed("reset") && ball.state >= Ball.SHOOTED)
 			{
 				ball.sprite.play("fadeout");
