@@ -70,9 +70,9 @@ package
 			world.add_block(212, 161, 2, 5, "block");
 			world.add_block(230, 144, 4, 23, "block");
 			
-			_sensor3 = world.add_block(217,  57, 13, 3, "sensor");
-			_sensor2 = world.add_block(217, 112, 13, 3, "sensor");
-			_sensor1 = world.add_block(217, 165, 13, 3, "sensor");
+			_sensor3 = world.add_block(217,  57, 11, 3, "sensor");
+			_sensor2 = world.add_block(217, 112, 11, 3, "sensor");
+			_sensor1 = world.add_block(217, 165, 11, 3, "sensor");
 		}
 		
 		override public function update():void

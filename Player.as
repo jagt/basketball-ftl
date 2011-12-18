@@ -41,7 +41,8 @@ package
 			Input.define("right", Key.RIGHT, Key.D);
 			Input.define("up", Key.UP, Key.W);
 			Input.define("down", Key.DOWN, Key.S);
-			Input.define("jump", Key.Z);
+			Input.define("jump", Key.Z, Key.SPACE);
+			Input.define("reset", Key.X, Key.R);
 			
 			type = "player";
 			
@@ -55,6 +56,18 @@ package
 				throw "get an bad ball";	
 			}
 			ball = free_ball;
+			if (ball.state == Ball.FREE)
+			{
+				// a clean ball
+				ball.velocity_x = 100;
+				ball.velocity_y = -50;
+			}
+			else if (ball.state == Ball.SHOOTED)
+			{
+				// TODO shooted ball should not use
+				// same velo as a free ball
+				
+			}
 			ball.state = Ball.HOLDED;
 		}
 		

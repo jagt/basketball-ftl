@@ -56,9 +56,9 @@ package
 		
 		override public function update():void
 		{
-			if (Input.check(Key.R))
+			if (Input.pressed("reset") && ball.state == Ball.SHOOTED)
 			{
-				FP.world = new GameWorld();
+				ball.sprite.play("fadeout");
 			}
 			super.update();
 		}

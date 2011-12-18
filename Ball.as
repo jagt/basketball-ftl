@@ -44,9 +44,8 @@ package
 		public function reset():void
 		{
 			sprite.play("fadein");
+			state = FREE;
 			_player.hold_ball(this);
-			velocity_x = 100;
-			velocity_y = -50;
 		}
 		
 		public function roll():void
