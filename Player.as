@@ -46,19 +46,10 @@ package
 			head = new Entity(x, y);
 			head.setHitbox(8, 4);
 			
-			
-			Input.define("left", Key.LEFT, Key.A);
-			Input.define("right", Key.RIGHT, Key.D);
-			Input.define("up", Key.UP, Key.W);
-			Input.define("down", Key.DOWN, Key.S);
-			Input.define("jump", Key.Z, Key.SPACE);
-			Input.define("reset", Key.X, Key.R);
-			
 			type = "player";
 			
 			sprite.add("walk", [1, 2], 10);
 			sprite.frame = 0;
-			on_floor = true;
 		}
 		
 		public function hold_ball(free_ball:Ball):void

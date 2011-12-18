@@ -22,6 +22,8 @@ package
 		
 		private var _bg:Entity;
 		
+		private var _froze_cnt:int = 10;
+		
 		public function GameWorld()
 		{
 			world = this; // set singleton
@@ -77,6 +79,10 @@ package
 		
 		override public function update():void
 		{
+			if (_froze_cnt > 0) {
+				--_froze_cnt;
+				return;
+			}
 			if (Input.pressed("reset") && ball.state >= Ball.SHOOTED)
 			{
 				ball.sprite.play("fadeout");

@@ -14,7 +14,7 @@ package
 		
 		override public function init():void
 		{
-			FP.world = new GameWorld();
+			FP.world = new MenuWorld();
 			FP.screen.color = Com.COLOR_0;
 			// ditch box2d, implement ball collision by hand
 			// since it is relatively easy and more controlled.

@@ -32,7 +32,7 @@ package
 		{
 			visible = true;
 			collidable = true;
-			x = 30 + FP.random * 150;
+			x = 30 + FP.random * 130;
 		}
 	}
 }
