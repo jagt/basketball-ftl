@@ -19,8 +19,10 @@ package
 		private const GRAVITY:Number = 90;
 		private const BALL_CHARGE_Y:Number = 180;
 		private const BALL_DRAG_CHARGE_Y:Number = 90;
-		private const BALL_DRAG_X:Number = 90;
-		private const BALL_CHARGE_X:Number = 50;
+		private const BALL_DRAG_X:Number = 70;
+		private const BALL_CHARGE_X_RIGHT:Number = 40;
+		private const BALL_CHARGE_X_LEFT:Number = 20;
+		private const BALL_BONUS_CHARGE_Y:Number = 10;
 		
 		
 		private var _velo_x:Number = 0;
@@ -70,6 +72,11 @@ package
 			if (y >= 200 - height)
 			{
 				y = 200 - height;
+				if (!_on_floor && ball)
+				{
+					// just hit the floor
+					shoot_ball();
+				}
 				_on_floor = true;
 				_velo_y = 0;
 			}
@@ -102,13 +109,34 @@ package
 					if (_velo_x < -40) _velo_x += 20;
 					sprite.frame = 3;
 				}
-			} else if (ball != null){
+				
+				// sync player velo to ball with a fraction
+				if (ball != null) {
+					ball.velocity_x = Ball.SHOOT_VELO_X + _velo_x * 0.5;
+				}
+			} 
+			else if (ball != null)
+			{
+				
 				// aerial controlling with ball
 				if (Input.check("jump")) {
 					// hold jump to charge ball Y velo
 					if (_velo_y < 0)
 					{
 						ball.velocity_y -= BALL_CHARGE_Y * dt;
+						if (Input.check("right"))
+						{
+							ball.velocity_x += BALL_CHARGE_X_RIGHT * dt;	
+						} 
+						else if (Input.check("left"))
+						{
+							ball.velocity_x -= BALL_CHARGE_X_LEFT * dt;	
+						}
+						if (_velo_y > -10)
+						{
+							FP.console.log("bonus");
+							ball.velocity_y -= BALL_BONUS_CHARGE_Y * dt;
+						}
 					}
 					else
 					{

@@ -11,6 +11,8 @@ package
 		public static const HOLDED:int = 0;
 		public static const FREE:int = 1
 		public static const SHOOTED:int = 2;
+		public static const SHOOT_VELO_X:Number = 100;
+		public static const SHOOT_VELO_Y:Number = -50;
 		
 		public var sprite:Spritemap;
 		// well maybe we don't need a real ball here
@@ -21,6 +23,7 @@ package
 		public var do_predict:Boolean;
 		
 		private const ROLL_THRESH:Number = 50*50;
+		private const CTHRESH:Number = 10;
 		private var _gravity:Number = 250;
 		private var _roll_counter:Number;
 		
@@ -56,15 +59,60 @@ package
 		
 		override public function update():void
 		{
-			if (state > HOLDED) {
-				_roll_counter += velocity_x*velocity_x + velocity_y*velocity_y;
-				if (_roll_counter > ROLL_THRESH) {
-					roll();
+			if (state == HOLDED) return super.update();
+			
+			_roll_counter += velocity_x*velocity_x + velocity_y*velocity_y;
+			if (_roll_counter > ROLL_THRESH) {
+				roll();
+			}
+			// update with velocity only when not holded
+			velocity_y += _gravity * FP.elapsed;
+			x += velocity_x * FP.elapsed;
+			y += velocity_y * FP.elapsed;
+			
+			if (state == SHOOTED)
+			{
+				var dt:Number = FP.elapsed * 1;
+				// handle collision
+				var dx:Number = x + velocity_x * dt;
+				var dy:Number = y + velocity_y * dt;
+				// resolve in x and y seperately
+				var other:Entity;
+				
+				other = collide("block", dx, y);
+				if (other != null)
+				{
+					// x axis causing collision
+					if (velocity_x > CTHRESH && dx+width > other.left)
+					{
+						// hit right
+						velocity_x = -velocity_x * 0.6;
+					}
+					else if (velocity_x < -CTHRESH && dx < other.right)
+					{
+						// hit left
+						velocity_x = -velocity_x * 0.3;
+					}
+					
 				}
-				// update with velocity only when not holded
-				velocity_y += _gravity * FP.elapsed;
-				x += velocity_x * FP.elapsed;
-				y += velocity_y * FP.elapsed;
+				
+				other = collide("block", x, dy);
+				if (other != null) 
+				{
+					// y axis causing collision
+					if (velocity_y > CTHRESH && dy+height > other.top)
+					{
+						// hit bottom
+						velocity_y = - velocity_y * 0.7;
+					}
+					else if (velocity_y < -CTHRESH && dy < other.bottom)
+					{
+						// hit top
+						velocity_y = - velocity_y * 0.8;
+					}
+				}
+					
+				
 			}
 			
 			super.update();
@@ -77,17 +125,18 @@ package
 			var px:Number, py:Number, px2:Number, py2:Number;
 			// to predict
 			FP.buffer.lock();
-			for (var ix:int = 0; ix < 40; ++ix )
+			for (var ix:int = 1; ix < 40; ++ix )
 			{
 				// TODO opt to an add fashion
 				// TODO draw line based on curve so it would looks better
-				t = ix * 1.5 * dt;
+				//t = ix * 1.5 * dt;
 				//FP.console.log( Math.abs(t + vy / _gravity) );
-//				t = px / vx;
-				px = vx * t; 
+				px = ix * 7;
+				t = px / vx;
 				py  = vy * t + 0.5 * _gravity * t * t;
-				if (py + centerY > 200 - 4 || px + centerX > 180) break;
+				if (py + centerY > 200 - 4) break;
 				FP.buffer.setPixel(px + centerX, py + centerY, Com.COLOR_3);
+				FP.buffer.setPixel(px + centerX, py + centerY +1, Com.COLOR_2);
 //				t = (px + 1) / vx;
 //				px = vx * t; 
 //				py = vy * t + 0.5 * _gravity * t * t;
