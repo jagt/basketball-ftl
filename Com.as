@@ -1,6 +1,9 @@
 package
 {
 	public class Com {
+		[Embed(source = 'data/Gamegirl.ttf', embedAsCFF="false", fontFamily = "GameGirl")]
+		public static const FntGameGirl:Class;
+		
 		public static const INTERVAL:Number = 0.0333;
 		public static const WIDTH:int = 240;
 		public static const HEIGHT:int = 240;

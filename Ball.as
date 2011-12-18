@@ -46,7 +46,10 @@ package
 			velocity_x = 0;
 			velocity_y = 0;
 			
-			reset();
+			sprite.play("fadein");
+			tricks.length = 0; // clear tricks
+			state = FREE;
+			_player.hold_ball(this);
 		}
 		
 		public function reset():void
@@ -56,6 +59,10 @@ package
 			for each (var trick:String in tricks) {
 				FP.console.log(trick);
 			}
+			// update status
+			GameWorld.world.status.text.text = 
+				GameWorld.world.status.calculate();
+			
 			tricks.length = 0; // clear tricks
 			state = FREE;
 			_player.hold_ball(this);
@@ -123,7 +130,7 @@ package
 					{
 						// hit bottom
 						velocity_y = - velocity_y * 0.7;
-						if (other is Ground)
+						if (other is Ground && state == SHOOTED)
 							tricks.push("ground");
 					}
 					else if (velocity_y < -CTHRESH && dy < other.bottom)

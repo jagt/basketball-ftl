@@ -18,6 +18,7 @@ package
 		public var basket:Basket;
 		public var ball:Ball;
 		public var effects:Effects;
+		public var status:Status;
 		
 		private var _bg:Entity;
 		
@@ -54,7 +55,7 @@ package
 			basket = new Basket();
 			ball = new Ball(player);
 			effects = new Effects(ball);
-			effects.trail_on = true;
+			status = new Status(ball);
 			
 			// adding
 			add(_bg);
@@ -64,6 +65,7 @@ package
 			add(player);
 			add(player.head) // add for collision and debug drawing
 			add(ball);
+			add(status);
 			
 			// debugs
 			FP.console.enable();

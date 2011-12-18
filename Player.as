@@ -129,6 +129,11 @@ package
 				if (Input.check("jump")) {
 					_velo_y = -80;
 					on_floor = false;
+					
+					if (x < TRICK_RANGED_X)
+					{
+						if (ball) ball.tricks.push("ranged");
+					}
 					// reduce velo_x for a more real feeling
 					if (_velo_x > 40) 
 					{
@@ -144,10 +149,6 @@ package
 					if (_velo_x < 10 && _velo_x > -10)
 					{
 						if (ball) ball.tricks.push("stand");
-					}
-					if (x < TRICK_RANGED_X)
-					{
-						if (ball) ball.tricks.push("ranged");
 					}
 					sprite.frame = 3;
 				}
