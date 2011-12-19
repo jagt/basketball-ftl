@@ -49,6 +49,8 @@ package
 		
 		public function game_over():void
 		{
+			// showtime game does not count
+			if (is_show_time) return;
 			if (score != 0)
 			{
 				info.visible = true;
