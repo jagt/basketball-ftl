@@ -9,6 +9,12 @@ package
 		[Embed(source = 'data/player.png')]
 		private const ImgPlayer:Class;
 		
+		[Embed(source = 'data/jump.mp3')]
+		private const SndJump:Class;
+		
+		[Embed(source = 'data/shoot.mp3')]
+		private const SndShoot:Class;
+		
 		public var sprite:Spritemap;
 		public var ball:Ball; // current ball or empty
 		public var head:Entity;
@@ -38,6 +44,9 @@ package
 		private var _hold_roll:int;
 		private var _is_dirty_ball:Boolean = false;
 		
+		private var _jump_sfx:Sfx;
+		private var _shoot_sfx:Sfx;
+		
 		public function Player()
 		{
 			sprite = new Spritemap(ImgPlayer, 12, 16);
@@ -45,6 +54,9 @@ package
 			super(20, 200 - height, sprite);
 			head = new Entity(x, y);
 			head.setHitbox(8, 4);
+			
+			_jump_sfx = new Sfx(SndJump);
+			_shoot_sfx = new Sfx(SndShoot);
 			
 			type = "player";
 			
@@ -81,6 +93,7 @@ package
 		
 		public function shoot_ball():void
 		{
+			_shoot_sfx.play();
 			can_alley = false;
 			ball.do_predict = false;
 			ball.state = Ball.SHOOTED;
@@ -127,6 +140,7 @@ package
 				}
 				
 				if (Input.check("jump")) {
+					_jump_sfx.play();
 					_velo_y = -80;
 					on_floor = false;
 					

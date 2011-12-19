@@ -8,6 +8,12 @@ package
 		[Embed(source = 'data/ball.png')]
 		private const ImgBall:Class;
 		
+		[Embed(source = 'data/bounce.mp3')]
+		private const SndBounce:Class;
+		
+		[Embed(source = 'data/bounce2.mp3')]
+		private const SndBounce2:Class;
+		
 		public static const HOLDED:int = 0;
 		public static const FREE:int = 1
 		public static const SHOOTED:int = 2;
@@ -33,6 +39,10 @@ package
 		private var _roll_counter:Number;
 		private var _player:Player;
 		
+		private var _b1:Sfx;
+		private var _b2:Sfx;
+		private var _bcnt:int = 0;
+		
 		public var tricks:Vector.<String>;
 		
 		public function Ball(player:Player)
@@ -46,6 +56,8 @@ package
 			tricks = new Vector.<String>();
 			velocity_x = 0;
 			velocity_y = 0;
+			_b1  = new Sfx(SndBounce);
+			_b2  = new Sfx(SndBounce2);
 			
 			sprite.play("fadein");
 			tricks.length = 0; // clear tricks
@@ -114,8 +126,11 @@ package
 				
 				// TODO fix the funky collision if has more time
 				other = collide("block", dx, y);
+				
+				var bounce_this_frame:Boolean = false;
 				if (other != null)
 				{
+					bounce_this_frame = true;
 					// x axis causing collision
 					if (velocity_x > CTHRESH && dx+width > other.left)
 					{
@@ -136,6 +151,7 @@ package
 				other = collide("block", x, dy);
 				if (other != null) 
 				{
+					bounce_this_frame = true;
 					// y axis causing collision
 					if (dy+height > other.top)
 					{
@@ -153,7 +169,12 @@ package
 						// hit top
 						velocity_y = - velocity_y * 0.5;
 					}
-					
+				}
+				
+				if (bounce_this_frame) {
+					if (_bcnt) _b1.play(1, -0.3);
+					else _b2.play(1, 0.3);
+					_bcnt = 1 - _bcnt;
 				}
 				
 				// recalc dx and dy, since next frame
