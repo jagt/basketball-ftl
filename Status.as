@@ -57,7 +57,6 @@ package
 				text.text = "";
 			}
 			highest = score > highest ? score : highest;
-			hud.text = " highscore:" + highest;
 			_clear_score = true;
 			score = 0;
 		}
@@ -66,6 +65,7 @@ package
 		public function setup():void
 		{
 			text.text = calculate();
+			hud.text = " highscore:" + highest + "  score:" + score;
 			total_shots += 1;
 			
 			plate.reset();
