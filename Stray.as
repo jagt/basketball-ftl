@@ -5,6 +5,7 @@ package
 	import net.flashpunk.utils.*;
 	
 	[SWF(width="240", height="240")]
+	[Frame(factoryClass="Preloader")]
 	
 	public class Stray extends Engine
 	{

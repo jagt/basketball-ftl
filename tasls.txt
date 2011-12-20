@@ -1,11 +1,6 @@
 1. a loader, fix sound files and reduce sound size
 2!. find a way to fix collision, give less missed good shots
-3. figure out why 'direct' is so rare
---
-after score collision is ruining all the direct shot fun, figure out a way to solve this
-maybe redesign the basket 
-AVOID POST SCORED COLLISION
-
+3!. figure out why 'direct' is so rare
 4. detailed background, player sprite overhaul
 5!. give basket a bigger rebound fraction so it is more easy to score
 6. add more trick types, enchance tricks parsing and score calculates
