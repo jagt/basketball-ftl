@@ -138,6 +138,7 @@ package
 				
 				// TODO fix the funky collision if has more time
 				// resolve y first	
+				var bounce_this_frame:Boolean = false;
 				other = collide("block", px, dy);
 				if (other != null) 
 				{
@@ -171,7 +172,6 @@ package
 				}
 				
 				other = collide("block", dx, py);
-				var bounce_this_frame:Boolean = false;
 				if (other != null)
 				{
 					bounce_this_frame = true;

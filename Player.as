@@ -93,6 +93,7 @@ package
 		
 		public function shoot_ball():void
 		{
+			_jump_sfx.stop();
 			_shoot_sfx.play();
 			can_alley = false;
 			ball.do_predict = false;

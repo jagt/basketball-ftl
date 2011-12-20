@@ -10,7 +10,10 @@ AVOID POST SCORED COLLISION
 5!. give basket a bigger rebound fraction so it is more easy to score
 6. add more trick types, enchance tricks parsing and score calculates
 7. fix alley oop velocity, now it is quite weird. also fix alley oop lines, when doing a high shot the lines are hard to see, try to interpolate more points
-8. reduce ball size to see if it would looks better
+8!. reduce ball size to see if it would looks better
+
+feature:
+1. add a random CHALLENGE mode that keep user scoring to a single basket or a single position
 
 
 bugs
