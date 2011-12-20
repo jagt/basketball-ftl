@@ -1,17 +1,16 @@
 1. a loader, fix sound files and reduce sound size
-2. find a way to fix collision, give less missed good shots
----
-use current position and last frame position to calculate collision
-so it will avoid some quirky pre rebound
-fix y collison so if aball is on a platform it will stay on it rather than falling thru it
-
-
-
+2!. find a way to fix collision, give less missed good shots
 3. figure out why 'direct' is so rare
+--
+after score collision is ruining all the direct shot fun, figure out a way to solve this
+maybe redesign the basket 
+AVOID POST SCORED COLLISION
+
 4. detailed background, player sprite overhaul
-5. give basket a bigger rebound fraction so it is more easy to score
+5!. give basket a bigger rebound fraction so it is more easy to score
 6. add more trick types, enchance tricks parsing and score calculates
 7. fix alley oop velocity, now it is quite weird. also fix alley oop lines, when doing a high shot the lines are hard to see, try to interpolate more points
+8. reduce ball size to see if it would looks better
 
 
 bugs

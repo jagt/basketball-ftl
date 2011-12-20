@@ -33,6 +33,11 @@ package
 			}
 		}
 		
+		public function edge_effect(edge:Entity):void
+		{
+			emit.emit("score", edge.x, edge.y);
+		}
+		
 		public function Effects(ball:Ball)
 		{
 			emit = new Emitter(ImgParticles, 6, 6);

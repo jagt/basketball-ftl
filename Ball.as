@@ -139,6 +139,13 @@ package
 						y = other.top - height;
 						// hit bottom
 						velocity_y = - velocity_y * 0.7;
+						if (other.name == "edge")
+						{
+							// give a bonus fraction
+							velocity_y *= 0.8;
+							GameWorld.world.effects.edge_effect(other);
+						}
+						
 						if (other is Ground && state == SHOOTED)
 							tricks.push("ground");
 					}

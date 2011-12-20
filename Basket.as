@@ -1,5 +1,7 @@
 package
 {
+	import flash.utils.Endian;
+	
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.Graphic;
@@ -40,6 +42,10 @@ package
 		public var sensor1:Entity;
 		public var sensor2:Entity;
 		public var sensor3:Entity;
+		
+		public var edge1:Entity;
+		public var edge2:Entity;
+		public var edge3:Entity;
 		
 		
 		public function trigger(sensor:Entity):Boolean
@@ -110,16 +116,25 @@ package
 			
 			// add corresponding hit boxes
 			var world:GameWorld = GameWorld.world;
-			world.add_block(212, 53, 2, 5, "block");
-			world.add_block(230, 36, 4, 18, "block");
-			world.add_block(212, 107, 2, 5, "block");
-			world.add_block(230, 90, 4, 18, "block");
-			world.add_block(212, 161, 2, 5, "block");
-			world.add_block(230, 144, 4, 18, "block");
+			edge1 = world.add_block(212, 53, 2, 5, "block");
+			world.add_block(230, 36, 4, 13, "block");
+			world.add_block(234, 50, 5, 5, "block");
 			
-			sensor3 = world.add_block(213,  55, 14, 3, "sensor");
-			sensor2 = world.add_block(213, 109, 14, 3, "sensor");
-			sensor1 = world.add_block(213, 163, 14, 3, "sensor");
+			edge2 = world.add_block(212, 107, 2, 5, "block");
+			world.add_block(230, 90, 4, 13, "block");
+			world.add_block(234, 104, 5, 5, "block");
+			
+			edge3 = world.add_block(212, 161, 2, 5, "block");
+			world.add_block(230, 144, 4, 13, "block");
+			world.add_block(234, 158, 5, 5, "block");
+			
+			// abuse the name attribute
+			edge1.name = edge2.name = edge3.name = "edge";
+			
+			
+			sensor3 = world.add_block(213,  55, 16, 3, "sensor");
+			sensor2 = world.add_block(213, 109, 16, 3, "sensor");
+			sensor1 = world.add_block(213, 163, 16, 3, "sensor");
 			
 			reset();
 		}
