@@ -48,8 +48,13 @@ package
 		public function Ball(player:Player)
 		{
 			sprite = new Spritemap(ImgBall, 8, 8);
-			super(x, y, sprite);
-			setHitbox(8, 8, 0, 0);
+			sprite.originX = 1;
+			sprite.originY = 1;
+			
+			super(-10, -10, sprite);
+			setHitbox(6, 6, 0, 0);
+			
+			
 			sprite.add("fadeout", [4, 5, 6], 10, false);
 			sprite.add("fadein", [6, 5, 4, 0], 10, false);
 			_player = player;
@@ -90,6 +95,10 @@ package
 		public function roll():void
 		{
 			sprite.frame = (sprite.frame + 1) % 4;
+			
+			FP.console.log('------');
+			FP.console.log(sprite.x - sprite.originX);
+			FP.console.log(x);
 		}
 		
 		override public function render():void

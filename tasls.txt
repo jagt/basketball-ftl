@@ -14,4 +14,5 @@ AVOID POST SCORED COLLISION
 
 
 bugs
-1. sometimes the prediction line would disappear, this is pretty bad
+1!. sometimes the prediction line would disappear, this is pretty bad
+2. the ball is actually not rolled...

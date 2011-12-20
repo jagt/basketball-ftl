@@ -253,7 +253,7 @@ package
 			if (ball != null) {
 				// player holding the ball
 				ball.x = x + 3;
-				ball.y = y - 8;
+				ball.y = y - 6;
 			}
 			
 			// update with velocity
