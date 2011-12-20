@@ -40,14 +40,6 @@ package
 			_how.visible = false;
 			
 			_bgm = new Sfx(SndMenu);
-			
-			Input.define("left", Key.LEFT, Key.A);
-			Input.define("right", Key.RIGHT, Key.D);
-			Input.define("up", Key.UP, Key.W);
-			Input.define("down", Key.DOWN, Key.S);
-			Input.define("jump", Key.Z, Key.SPACE);
-			Input.define("reset", Key.X, Key.R);
-			
 			_bgm.loop(0.7);
 		}
 		

@@ -74,7 +74,15 @@ package
 			add(status);
 			
 			// debugs
-//			FP.console.enable();
+			if (Com.isDebugPlayer())
+			{
+				_froze_cnt = 2;
+				FP.console.enable();
+				
+				status.text.y += 30;
+				status.info.y += 30;
+				status.hud.y  += 30;
+			}
 			
 			// inits
 			status.setup();

@@ -1,6 +1,8 @@
 package
 {
 	public class Com {
+		import flash.system.Capabilities;
+		
 		[Embed(source = 'data/Gamegirl.ttf', embedAsCFF="false", fontFamily = "GameGirl")]
 		public static const FntGameGirl:Class;
 		
@@ -20,6 +22,11 @@ package
 		public static function length(x:Number, y:Number):Number
 		{
 			return Math.sqrt(x*x+y*y);
+		}
+		
+		public static function isDebugPlayer() : Boolean
+		{
+			return Capabilities.isDebugger;
 		}
 	}
 	
