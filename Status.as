@@ -238,7 +238,7 @@ package
 			}
 			else if (desc.length == 1)
 			{
-				desc.splice(0, 0, "plain");
+				desc.splice(0, 0, "clear");
 			}
 			
 			// multiply the scores

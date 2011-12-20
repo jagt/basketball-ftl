@@ -33,7 +33,7 @@ package
 		public var collided:Boolean;
 		
 		private const ROLL_THRESH:Number = 50*50;
-		private const CTHRESH:Number = 10;
+		private const CTHRESH:Number = 4;
 		private const FADE_THRESH:Number = 15;
 		private var _gravity:Number = 250;
 		private var _roll_counter:Number;
@@ -102,13 +102,16 @@ package
 		
 		override public function update():void
 		{
+			// update with velocity only when not holded
 			if (state == HOLDED) return super.update();
 			
 			_roll_counter += velocity_x*velocity_x + velocity_y*velocity_y;
 			if (_roll_counter > ROLL_THRESH) {
 				roll();
 			}
-			// update with velocity only when not holded
+			// last frame position
+			var px:Number = x;
+			var py:Number = y;
 			velocity_y += _gravity * FP.elapsed;
 			delta_x = velocity_x * FP.elapsed;
 			delta_y = velocity_y * FP.elapsed;
@@ -119,49 +122,29 @@ package
 			{
 				var dt:Number = FP.elapsed * 1;
 				// handle collision
-				var dx:Number = x + velocity_x * dt;
-				var dy:Number = y + velocity_y * dt;
+				var dx:Number = x;
+				var dy:Number = y;
 				// resolve in x and y seperately
 				var other:Entity;
 				
 				// TODO fix the funky collision if has more time
-				other = collide("block", dx, y);
-				
-				var bounce_this_frame:Boolean = false;
-				if (other != null)
-				{
-					bounce_this_frame = true;
-					// x axis causing collision
-					if (velocity_x > CTHRESH && dx+width > other.left)
-					{
-						// hit right
-						velocity_x = -velocity_x * 0.6;
-					}
-					else if (velocity_x < -CTHRESH && dx < other.right)
-					{
-						// hit left
-						velocity_x = -velocity_x * 0.5;
-					}
-					
-					// if collide before scoring
-					if (state == SHOOTED)
-						collided = true;
-				}
-				
-				other = collide("block", x, dy);
+				// resolve y first	
+				other = collide("block", px, dy);
 				if (other != null) 
 				{
 					bounce_this_frame = true;
 					// y axis causing collision
-					if (dy+height > other.top)
+					if (velocity_y > CTHRESH && dy+height > other.top)
 					{
+						y = other.top - height;
 						// hit bottom
 						velocity_y = - velocity_y * 0.7;
 						if (other is Ground && state == SHOOTED)
 							tricks.push("ground");
 					}
-					else if (dy < other.bottom)
+					else if (velocity_y < CTHRESH && dy < other.bottom)
 					{
+						y = other.bottom + 1;
 						// if collide before scoring
 						// except ground
 						if (state == SHOOTED)
@@ -171,16 +154,40 @@ package
 					}
 				}
 				
+				other = collide("block", dx, py);
+				var bounce_this_frame:Boolean = false;
+				if (other != null)
+				{
+					bounce_this_frame = true;
+					// x axis causing collision
+					if (velocity_x > CTHRESH && dx+width > other.left)
+					{
+						x = other.left - width;
+						// hit right
+						velocity_x = -velocity_x * 0.6;
+					}
+					else if (velocity_x < -CTHRESH && dx < other.right)
+					{
+						x = other.right + 1;
+						// hit left
+						velocity_x = -velocity_x * 0.5;
+					}
+					
+					// if collide before scoring
+					if (state == SHOOTED)
+						collided = true;
+				}
+				
+				// recalc dx as next frame position
+				dx = x + velocity_x * dt;
+				// update resovled y in dy
+				dy = y + (velocity_y + _gravity * dt)  * dt;
+				
 				if (bounce_this_frame) {
 					if (_bcnt) _b1.play(1, -0.3);
 					else _b2.play(1, 0.3);
 					_bcnt = 1 - _bcnt;
 				}
-				
-				// recalc dx and dy, since next frame
-				// velocity changes a lot
-				dx = x + velocity_x * dt;
-				dy = y + (velocity_y + _gravity * dt)  * dt;
 				
 				// TODO high speed ball are ignored this sucks
 				// only test current position to avoid
