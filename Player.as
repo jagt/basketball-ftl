@@ -144,8 +144,6 @@ package
 					_velo_y = -80;
 					on_floor = false;
 					
-					if (ball) ball.do_predict = true;
-					
 					if (x < TRICK_RANGED_X)
 					{
 						if (ball) ball.tricks.push("ranged");
@@ -191,6 +189,7 @@ package
 				
 				// aerial controlling with ball
 				if (Input.check("jump")) {
+					ball.do_predict = true;
 					// hold jump to charge ball Y velo
 					if (_velo_y < 0)
 					{
