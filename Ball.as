@@ -95,10 +95,6 @@ package
 		public function roll():void
 		{
 			sprite.frame = (sprite.frame + 1) % 4;
-			
-			FP.console.log('------');
-			FP.console.log(sprite.x - sprite.originX);
-			FP.console.log(x);
 		}
 		
 		override public function render():void
@@ -117,6 +113,7 @@ package
 			_roll_counter += velocity_x*velocity_x + velocity_y*velocity_y;
 			if (_roll_counter > ROLL_THRESH) {
 				roll();
+				_roll_counter = 0;
 			}
 			// last frame position
 			var px:Number = x;
